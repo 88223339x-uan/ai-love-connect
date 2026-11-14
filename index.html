@@ -131,7 +131,7 @@ document.getElementById("saveProfile").onclick=async()=>{
  if(age<18||age>110){alert("Ứng dụng chỉ dành cho người từ 18 tuổi trở lên.");return;}
  const fullName=document.getElementById("name").value.trim();const country=document.getElementById("country").value.trim();
  if(!fullName||!country){alert("Vui lòng nhập tên hiển thị và quốc gia.");return;}
- const profile={id:currentUser.id,full_name:fullName,country,looking_for:document.getElementById("intent").value,interests:document.getElementById("interests").value,bio:"",language:document.documentElement.lang||"vi"};
+ const profile={id:currentUser.id,full_name:fullName,country,gender:document.getElementById("gender").value,looking_for:document.getElementById("intent").value,interests:document.getElementById("interests").value,bio:"",language:document.documentElement.lang||"vi"};
  setAuthStatus("Đang lưu hồ sơ...");
  const {error:profileError}=await supabaseClient.from("profiles").upsert(profile,{onConflict:"id"});
  if(profileError){setAuthStatus("Không lưu được hồ sơ: "+profileError.message);return;}
