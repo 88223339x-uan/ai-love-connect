@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#9b477b">
 <meta name="description" content="AI Love Connect — Meet people who understand you.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>AI Love Connect</title>
@@ -37,14 +38,22 @@ footer{padding:15px;text-align:center;color:#948493;font-size:11px}
 <main>
 <section id="home">
  <div class="hero"><span class="pill">18+ · FRIENDSHIP · LOVE</span><h1 data-vi="Gặp gỡ người thực sự phù hợp." data-en="Meet someone who truly fits you.">Gặp gỡ người thực sự phù hợp.</h1><p class="sub" data-vi="Kết bạn, trò chuyện và khám phá sự đồng điệu — bắt đầu từ chính bạn." data-en="Make friends, talk and discover meaningful connections — starting with you.">Kết bạn, trò chuyện và khám phá sự đồng điệu — bắt đầu từ chính bạn.</p></div>
- <div class="notice">BẢN DEMO: Hồ sơ và tin nhắn mẫu chỉ để thử giao diện, không phải người dùng thật. Dữ liệu lưu trên thiết bị này, chưa đồng bộ với người khác. Không gửi thông tin tài chính, mật khẩu hoặc địa chỉ nhà cho người lạ.</div>
+ <div class="panel" id="accountPanel">
+ <h2>Tài khoản AI Love Connect</h2>
+ <p class="muted">Tạo tài khoản hoặc đăng nhập để lưu hồ sơ vào cơ sở dữ liệu. Chỉ dành cho người từ 18 tuổi trở lên.</p>
+ <label>Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com">
+ <label>Mật khẩu (ít nhất 8 ký tự)</label><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="••••••••">
+ <div class="row" style="margin-top:12px"><button id="signUpBtn">Đăng ký</button><button class="secondary" id="signInBtn">Đăng nhập</button><button class="secondary hide" id="signOutBtn">Đăng xuất</button></div>
+ <p id="authStatus" class="muted" aria-live="polite">Chưa đăng nhập.</p>
+</div>
+<div class="notice">BẢN DEMO: Hồ sơ và tin nhắn mẫu chỉ để thử giao diện, không phải người dùng thật. Dữ liệu lưu trên thiết bị này, chưa đồng bộ với người khác. Không gửi thông tin tài chính, mật khẩu hoặc địa chỉ nhà cho người lạ.</div>
  <div class="panel"><h2 data-vi="Bắt đầu hồ sơ của bạn" data-en="Start your profile">Bắt đầu hồ sơ của bạn</h2>
  <label data-vi="Tên hiển thị" data-en="Display name">Tên hiển thị</label><input id="name" placeholder="Ví dụ: Alex">
- <div class="row"><div><label data-vi="Tuổi (18+)" data-en="Age (18+)">Tuổi (18+)</label><input id="age" type="number" min="18" max="100" placeholder="30"></div><div><label data-vi="Quốc gia" data-en="Country">Quốc gia</label><input id="country" placeholder="Vietnam"></div></div>
+ <div class="row"><div><label data-vi="Ngày sinh (18+)" data-en="Date of birth (18+)">Ngày sinh (18+)</label><input id="age" type="date"></div><div><label data-vi="Quốc gia" data-en="Country">Quốc gia</label><input id="country" placeholder="Vietnam"></div></div>
  <label data-vi="Bạn đang tìm kiếm?" data-en="What are you looking for?">Bạn đang tìm kiếm?</label><select id="intent"><option>Friendship / Kết bạn</option><option>Serious relationship / Tình yêu nghiêm túc</option><option>Life partner / Bạn đời</option><option>Conversation / Trò chuyện</option></select>
  <label data-vi="Sở thích (cách nhau bằng dấu phẩy)" data-en="Interests (comma separated)">Sở thích (cách nhau bằng dấu phẩy)</label><input id="interests" placeholder="travel, music, cooking">
- <button style="width:100%;margin-top:14px" id="saveProfile" data-vi="Lưu hồ sơ trên thiết bị" data-en="Save profile on this device">Lưu hồ sơ trên thiết bị</button>
- <p class="muted">Chưa có tài khoản thật. Không tải ảnh cá nhân lên trong bản demo này.</p></div>
+ <button style="width:100%;margin-top:14px" id="saveProfile" data-vi="Lưu hồ sơ vào tài khoản" data-en="Save profile to account">Lưu hồ sơ vào tài khoản</button>
+ <p class="muted">Hồ sơ sẽ được lưu vào tài khoản của chị. Ngày sinh và email được lưu trong bảng riêng tư.</p></div>
  <div class="panel"><h2 data-vi="Cách AI ghép đôi" data-en="How matching works">Cách AI ghép đôi</h2><p class="muted" data-vi="Bản thử nghiệm dùng điểm minh họa dựa trên mục tiêu và sở thích. Đây chưa phải mô hình AI đã được huấn luyện." data-en="This demo uses illustrative scores based on goals and interests. It is not a trained AI model yet.">Bản thử nghiệm dùng điểm minh họa dựa trên mục tiêu và sở thích. Đây chưa phải mô hình AI đã được huấn luyện.</p></div>
 </section>
 <section id="discover" class="hide"><div class="hero"><h1 data-vi="Khám phá kết nối" data-en="Discover connections">Khám phá kết nối</h1><p class="sub" data-vi="Hồ sơ mẫu để trải nghiệm cách tìm người phù hợp." data-en="Sample profiles to preview discovery.">Hồ sơ mẫu để trải nghiệm cách tìm người phù hợp.</p></div><div id="profiles"></div></section>
@@ -65,6 +74,42 @@ const samples=[
  {id:2,name:"Daniel",age:38,country:"Australia",flag:"🇦🇺",emoji:"🌊",intent:"Life partner",interests:["hiking","music","cooking"],score:89,bio:"Enjoys nature, live music and honest communication."},
  {id:3,name:"Linh",age:29,country:"Vietnam",flag:"🇻🇳",emoji:"🌸",intent:"Friendship",interests:["food","films","travel"],score:86,bio:"Positive energy, exploring new places and cultures."}
 ];
+// Supabase public client configuration. Publishable key is intended for browser use; never put a secret/service_role key here.
+const SUPABASE_URL = "https://xnvuiebzdtcqkfnshhns.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_hKQFgh2Kf4tpvDy7kG5oew_BdQwXVuE";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let currentUser = null;
+const authStatus = document.getElementById("authStatus");
+function setAuthStatus(message){ authStatus.textContent = message; }
+async function refreshAuth(){
+ const {data:{session}} = await supabaseClient.auth.getSession();
+ currentUser = session?.user || null;
+ document.getElementById("signOutBtn").classList.toggle("hide", !currentUser);
+ document.getElementById("signUpBtn").classList.toggle("hide", !!currentUser);
+ document.getElementById("signInBtn").classList.toggle("hide", !!currentUser);
+ setAuthStatus(currentUser ? `Đã đăng nhập: ${currentUser.email}` : "Chưa đăng nhập.");
+}
+document.getElementById("signUpBtn").onclick = async () => {
+ const email=document.getElementById("authEmail").value.trim();
+ const password=document.getElementById("authPassword").value;
+ if(!email || password.length<8){setAuthStatus("Nhập email hợp lệ và mật khẩu ít nhất 8 ký tự.");return;}
+ setAuthStatus("Đang tạo tài khoản...");
+ const {data,error}=await supabaseClient.auth.signUp({email,password});
+ if(error){setAuthStatus("Không đăng ký được: "+error.message);return;}
+ if(data.session){currentUser=data.user;setAuthStatus("Đăng ký thành công và đã đăng nhập.");}
+ else setAuthStatus("Đã gửi email xác nhận. Mở email để xác nhận, sau đó đăng nhập.");
+ await refreshAuth();
+};
+document.getElementById("signInBtn").onclick = async () => {
+ const email=document.getElementById("authEmail").value.trim();
+ const password=document.getElementById("authPassword").value;
+ setAuthStatus("Đang đăng nhập...");
+ const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+ if(error){setAuthStatus("Đăng nhập chưa thành công: "+error.message);return;}
+ await refreshAuth();
+};
+document.getElementById("signOutBtn").onclick = async () => {await supabaseClient.auth.signOut();await refreshAuth();};
+supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;});
 let likes=JSON.parse(localStorage.getItem("alc_likes")||"[]"), lang="vi";
 function showTab(id){document.querySelectorAll("main section").forEach(s=>s.classList.toggle("hide",s.id!==id));document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));if(id==="discover")renderProfiles();if(id==="matches")renderMatches();}
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
@@ -72,12 +117,30 @@ function renderProfiles(){document.getElementById("profiles").innerHTML=samples.
 function like(id){if(!likes.includes(id))likes.push(id);localStorage.setItem("alc_likes",JSON.stringify(likes));alert("Đã lưu lượt thích demo trên thiết bị này.");renderProfiles()}
 function pass(id){alert("Đã bỏ qua hồ sơ mẫu.")}
 function renderMatches(){let chosen=samples.filter(p=>likes.includes(p.id));document.getElementById("matchList").innerHTML=chosen.length?chosen.map(p=>`<div class="match"><b>${p.emoji} ${p.name}, ${p.age}</b><p class="muted">Bạn đã thích hồ sơ mẫu này. Đây chưa phải ghép đôi hai chiều.</p></div>`).join(""):'<div class="panel muted">Chưa có lượt thích. Hãy khám phá hồ sơ mẫu trước nhé.</div>'}
-document.getElementById("saveProfile").onclick=()=>{let age=Number(document.getElementById("age").value);if(age<18||age>100){alert("Ứng dụng chỉ dành cho người từ 18 tuổi trở lên.");return}let data={name:document.getElementById("name").value,age,country:document.getElementById("country").value,intent:document.getElementById("intent").value,interests:document.getElementById("interests").value};if(!data.name||!data.country){alert("Vui lòng nhập tên hiển thị và quốc gia.");return}localStorage.setItem("alc_profile",JSON.stringify(data));alert("Đã lưu hồ sơ demo trên thiết bị này.");};
+document.getElementById("saveProfile").onclick=async()=>{
+ if(!currentUser){alert("Chị cần đăng nhập trước khi lưu hồ sơ.");return;}
+ const dob=document.getElementById("age").value;
+ if(!dob){alert("Vui lòng nhập ngày sinh.");return;}
+ const birth=new Date(dob+"T00:00:00");const today=new Date();let age=today.getFullYear()-birth.getFullYear();const m=today.getMonth()-birth.getMonth();if(m<0||(m===0&&today.getDate()<birth.getDate()))age--;
+ if(age<18||age>110){alert("Ứng dụng chỉ dành cho người từ 18 tuổi trở lên.");return;}
+ const fullName=document.getElementById("name").value.trim();const country=document.getElementById("country").value.trim();
+ if(!fullName||!country){alert("Vui lòng nhập tên hiển thị và quốc gia.");return;}
+ const profile={id:currentUser.id,full_name:fullName,country,looking_for:document.getElementById("intent").value,interests:document.getElementById("interests").value,bio:"",language:document.documentElement.lang||"vi"};
+ setAuthStatus("Đang lưu hồ sơ...");
+ const {error:profileError}=await supabaseClient.from("profiles").upsert(profile,{onConflict:"id"});
+ if(profileError){setAuthStatus("Không lưu được hồ sơ: "+profileError.message);return;}
+ const privateData={user_id:currentUser.id,email:currentUser.email,date_of_birth:dob};
+ const {error:privateError}=await supabaseClient.from("profile_private").upsert(privateData,{onConflict:"user_id"});
+ if(privateError){setAuthStatus("Hồ sơ cơ bản đã lưu, nhưng thông tin riêng tư chưa lưu: "+privateError.message);return;}
+ setAuthStatus("Đã lưu hồ sơ vào tài khoản Supabase. Hồ sơ hiện chỉ bạn xem được theo chính sách RLS hiện tại.");
+ alert("Đã lưu hồ sơ vào tài khoản của chị.");
+};
 document.getElementById("sendChat").onclick=()=>{let v=document.getElementById("chatInput").value.trim();if(!v)return;let d=document.createElement("div");d.className="chatline me";d.textContent=v;document.getElementById("chatExtra").appendChild(d);document.getElementById("chatInput").value="";};
 document.getElementById("reportBtn").onclick=()=>alert("Bản demo: chưa có máy chủ tiếp nhận báo cáo. Khi triển khai thật, báo cáo sẽ được gửi tới đội ngũ kiểm duyệt.");
 document.getElementById("clearBtn").onclick=()=>{if(confirm("Xóa hồ sơ và lượt thích demo trên thiết bị này?")){localStorage.removeItem("alc_profile");localStorage.removeItem("alc_likes");likes=[];renderMatches();alert("Đã xóa dữ liệu demo cục bộ.");}};
 document.getElementById("langBtn").onclick=()=>{lang=lang==="vi"?"en":"vi";document.querySelectorAll("[data-vi]").forEach(el=>el.textContent=el.dataset[lang]);document.documentElement.lang=lang;};
 renderProfiles();
+refreshAuth();
 if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
 </script>
 <footer>AI Love Connect · Demo prototype · Adults 18+ only</footer>
